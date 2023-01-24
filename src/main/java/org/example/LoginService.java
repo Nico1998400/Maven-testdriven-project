@@ -1,18 +1,18 @@
 package org.example;
 
 public class LoginService {
-
-    private DatabaseInterface databaseInterface;
+    private final DatabaseInterface databaseInterface;
 
     public LoginService(DatabaseInterface databaseInterface) {
         this.databaseInterface = databaseInterface;
     }
 
-    public AppUser findUserByUsername(String username) {
-        return null;
-    }
-
     public boolean login(String username, String password) throws Exception {
-        return false;
+        AppUser appUser = databaseInterface.findUserByUsernameAndPassword(username, password).orElseThrow();
+        if (!appUser.getPassword().equals(password)) {
+            throw new Exception("Incorrect password.");
+        }
+        return true;
     }
 }
+
